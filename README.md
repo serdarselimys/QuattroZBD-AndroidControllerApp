@@ -4,7 +4,7 @@
 
 Android remote control for the Quattro ZBD quadruped robot. It talks to the robot's ESP32 over Wi-Fi (UDP): virtual joysticks and buttons go out, battery / IMU / mode telemetry comes back. It can also use a phone-as-puppet mode, where the robot mirrors the tilt of your phone.
 
-Firmware repository: [_add link_](https://github.com/serdarselimys/QuattroZBD-AndroidControllerApp)
+Firmware repository: https://github.com/serdarselimys/QuattroZBD-AndroidControllerApp
 
 ---
 
