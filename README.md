@@ -4,7 +4,7 @@
 
 Android remote control for the Quattro ZBD quadruped robot. It talks to the robot's ESP32 over Wi-Fi (UDP): virtual joysticks and buttons go out, battery / IMU / mode telemetry comes back. It can also use a phone-as-puppet mode, where the robot mirrors the tilt of your phone.
 
-Firmware repository: _add link_
+Firmware repository: [_add link_](https://github.com/serdarselimys/QuattroZBD-AndroidControllerApp)
 
 ---
 
@@ -18,51 +18,6 @@ Firmware repository: _add link_
 - **Recall** button to re-run the robot's IMU auto-calibration (standing only)
 - Physical gamepad buttons plugged into / paired with the phone (A, B, L1, R1, L2, R2 and sticks) also work
 - Screen stays on while the app is open; puppet mode switches off automatically if the app goes to the background
-
----
-
-## Requirements
-
-| | |
-|---|---|
-| Android Studio | Recent stable release (Koala or newer recommended) |
-| Language / UI | Kotlin, Jetpack Compose (Material 3) |
-| Phone | Android phone with Wi-Fi. A gyroscope / rotation-vector sensor is only needed for puppet mode |
-| Robot | Quattro ZBD running the matching ESP32 firmware |
-
-Libraries are the standard AndroidX / Compose set that a new Android Studio **Empty Activity (Compose)** project already includes (`androidx.activity:activity-compose`, Compose Material 3, lifecycle runtime, Kotlin coroutines). There are no third-party dependencies.
-
-The manifest needs the normal network permission:
-
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-```
-
----
-
-## Build & install
-
-1. Clone this repository and open the project folder in Android Studio.
-2. Wait for **Gradle sync** to finish (sync is separate from build: if the Run button is grey, sync and device selection are usually the cause).
-3. Enable **Developer options → USB debugging** on the phone and connect it by USB. Accept the authorization prompt on the phone.
-4. Select the phone in the device dropdown and press **Run**.
-
-### If you fork or rename the app
-
-The `namespace` and `applicationId` in `app/build.gradle` and the `package` line at the top of `MainActivity.kt` must all agree, for example:
-
-```kotlin
-// build.gradle (app)
-namespace = "com.example.quattro_zbd"
-applicationId = "com.example.quattro_zbd"
-```
-
-```kotlin
-// MainActivity.kt, first line
-package com.example.quattro_zbd
-```
-
-A stale `package` line makes the app install but close immediately on launch. The launcher name comes from `app_name` in `res/values/strings.xml`. Using a different `applicationId` lets this app be installed next to the older hexapod app.
 
 ---
 
@@ -81,9 +36,6 @@ A stale `package` line makes the app install but close immediately on launch. Th
 3. If Android says the network has no internet and offers to switch to mobile data, **stay on the robot's network**.
 4. Open the app. When telemetry appears (battery, state) the link is working.
 
-The IP and port are constants at the top of `MainActivity.kt` (`esp32Ip`, `udpPort`). If you change the Wi-Fi name or password in the firmware, only the phone's Wi-Fi settings need to change; the app itself doesn't hold them.
-
-> If the phone is still trying to join the old hexapod network name (`HEXAPOD_ESP32`), nothing will appear to be wrong in the app but no data will arrive.
 
 ---
 
@@ -113,7 +65,6 @@ The IP and port are constants at the top of `MainActivity.kt` (`esp32Ip`, `udpPo
 | Item | Notes |
 |---|---|
 | State | SLEEP, ACTIVE, BODY LEVELING, PUPPET, CALIBRATION, EMOTE MODE |
-| Battery | Percentage estimated linearly from 10.0 V (0 %) to 12.6 V (100 %), plus the raw voltage. Suited to a 3S Li-ion/LiPo pack; adjust in `MainActivity.kt` for other packs |
 | Accelerometer | X / Y / Z in m/s² |
 | Balance / gait | Balance ON/OFF and TROT/WALK |
 | Joint / offset | Used while editing servo offsets from the robot menu |
@@ -150,26 +101,12 @@ All values little-endian, over UDP to `192.168.4.1:5000`, about every 8 ms.
 | 26 | walk gait on |
 | 27 | playing emote index |
 
-The emote list in the app (`emoteNames` in `MainActivity.kt`) must match the firmware `EMOTES[]` order, because the app sends the index:
+The emote list:
 
 Curious Head Tilt, Cautious Object Tap, The Wiggle, Play Bow, Happy Dance into Sneak, Breathing into Foot Stomp, Matrix Gyro Roll, Push-Ups, Sit & Wave Hello.
 
-If the firmware's emote list changes, update `emoteNames` to match.
-
 ---
 
-## Troubleshooting
-
-| Symptom | Check |
-|---|---|
-| Run button greyed out | Gradle sync finished? Phone selected in the device dropdown? USB debugging authorized? |
-| App installs, then bounces back to home screen | `package` line in `MainActivity.kt` doesn't match `namespace` / `applicationId` |
-| App opens but no telemetry | Phone joined `QUADRUPED_ESP32`? Mobile data auto-switch off? Robot powered and booted? |
-| Robot doesn't respond to sticks | Robot must be standing (hold L1 + R1 for 2 s). Release the emergency stop if used |
-| Stuck on the emote screen | Press **B**; the app leaves the screen immediately and re-syncs with the robot's next telemetry packet |
-| Puppet mode jumpy | Press **ZERO** while holding the phone in your neutral pose; check the phone has a rotation-vector sensor |
-
----
 
 ## Safety
 
