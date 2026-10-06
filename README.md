@@ -1,3 +1,5 @@
+![Screenshot](6.png)
+
 # Quattro ZBD – Android Control App
 
 Android remote control for the Quattro ZBD quadruped robot. It talks to the robot's ESP32 over Wi-Fi (UDP): virtual joysticks and buttons go out, battery / IMU / mode telemetry comes back. It can also use a phone-as-puppet mode, where the robot mirrors the tilt of your phone.
@@ -173,6 +175,10 @@ If the firmware's emote list changes, update `emoteNames` to match.
 
 The robot can fall and servos can pinch. Test on a stand first, keep the robot's emergency stop (SELECT/BACK on a gamepad) in mind, and keep the app in the foreground while driving. If no control packets arrive for about half a second, the firmware's stale-data failsafe takes over.
 
-## License
+## Licensing & Commercial Use
 
-Add your license here (e.g. MIT).
+Licensed under **Creative Commons Attribution–NonCommercial 4.0 International (CC BY-NC 4.0)**.
+
+You are free to remix, adapt and build upon this design for non-commercial purposes, with appropriate credit. Commercial use of any kind is not permitted.
+
+https://creativecommons.org/licenses/by-nc/4.0/
